@@ -1,0 +1,37 @@
+Project Proposal
+
+1) What goal is your website designed to achieve? 
+
+My website is designed to allow hikers to input a location and receive back a list of hikes ordered by driving distance. Clicking on individual hikes will up driving directions and current weather conditions. The website will have basic user profiles. 
+
+2) What kind of users will visit your site? In other words, what is the demographic of your users? 
+
+	The intended demographic is hikers looking for hikes within driving distance. 
+
+3) What data do you plan on using? You may have not picked your actual API yet, which is fine, just outline what kind of data you would like it to contain. 
+
+	The website will contain 3 primary types of data.
+
+	1) Basic user info such as username and password.
+
+	2) Map and driving direction data from either google maps or mapQuest. 
+
+	3) Weather data from OpenWeatherMap.
+
+4) In brief, outline your approach to creating your project (knowing that you may not know everything in advance and that these details might change later). Answer questions like the ones below, but feel free to add more information:
+
+A) The database schema will contain a User model, which will have columns for username and password at bare minimum. I could also add an is_admin column to allow myself to make admin users who can delete/edit other user profiles. 
+	Additionally, there will be 2 search result objects. One will contain the results of the hike search, this object will have driving directions, location and other data received back. The second search object will be a weather object for storing weather data on a particular hike (temperature, wind, humidity etc.) Both search objects could be stored as rows in tables (hikes/weather_conditions), this would allow users to save their search results. 
+	A single search will bring up a list of hikes ordered by driving distance, so each result would be a row in the table. 
+
+B) Possible issues include error handling around databases not responding, users entering incorrectly formatted information, API finding no hikes in the immediate area and users entering an address that can’t be driven to. There are likely other issues that I have not thought of yet. 
+
+C) Sensitive information that I need to secure includes user password and the API keys for the APIs I end up using.
+
+D) The app will take in a user inputted address and output a list of hikes within a given search radius. Those hikes will be ordered by driving time.  Clicking on individual hikes will up driving directions and current weather conditions. The website will have basic user profiles. 
+	As potential stretch goals, I could add the ability to see long term weather conditions for a given hiking spot. Allow users to save searches for later viewing. Allow users to review or leave comments on a hike and have those comments be visible to anyone who looks at the hike. Could also have a user profile page where all their reviews and comments could be displayed. 
+
+E) Upon first visiting the website users will be redirected to a register/login page. Any attempts to visit other pages by manually entering a URL will lead to redirection back to register/login. After logging in users will be taken to the search page which will have inputs inside of a search form as well as directions on how to use it. 
+	After searching search results will be displayed on the same page. Clicking on individual hikes would take users to a page that displays detailed information about that hike. Users could search again, clearing old results and replacing them with new ones. 
+
+F) The app will have some CRUD functionality but the main function of the website has nothing to do with CRUD. 
