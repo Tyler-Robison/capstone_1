@@ -1,0 +1,53 @@
+{% extends 'index.html' %}
+
+{% block title %} Hike Search {% endblock %}
+
+{% block main %}
+
+<h1>Hike Finder</h1>
+
+<form method="POST">
+
+  {{ form.hidden_tag() }}
+
+  {% for field in form
+  if field.widget.input_type != 'hidden' %}
+  <p>
+    {{ field.label }}
+    {{ field }}
+
+    {% for error in field.errors %}
+    {{ error }}
+    {% endfor %}
+  </p>
+  {% endfor %}
+
+  <button>Search</button>
+
+</form>
+
+{%if hikes %}
+<h2 id="{{address}}">Hikes near {{address}}</h2>
+
+<div id="directions-container">
+  <ol id="directions-list">
+    {% for hike in hikes %}
+    <div>
+      <li id="{{hike.place_id}}" data-coords="{{coords}}">
+        <button class="directions-button">Get Directions</button>
+        <button class="forecast-button">5 day forecast</button>
+        <p> <b> Name:</b> {{hike.name}}</p>
+        <p> <b> Address: </b> {{hike.address}} </p>
+        <p><i>Will give location if no address available</i></p>
+      </li>
+    </div>
+    {% endfor %}
+  </ol>
+</div>
+
+<ol id="location-directions"></ol>
+
+<ol id="forecast-display"></ol>
+
+{%endif%}
+{% endblock %}
