@@ -4,46 +4,62 @@
 
 {% block main %}
 
-<h1>Hike Finder</h1>
 
-<form method="POST">
+<div class="main-div-search">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="border border-info mt-3 rounded search-form">
+          <h1>Hike Finder</h1>
+          <form method="POST">
 
-  {{ form.hidden_tag() }}
+            {{ form.hidden_tag() }}
 
-  {% for field in form
-  if field.widget.input_type != 'hidden' %}
-  <p>
-    {{ field.label }}
-    {{ field }}
+            {% for field in form
+            if field.widget.input_type != 'hidden' %}
+            <p>
+              {{ field.label }}
+              {{ field }}
 
-    {% for error in field.errors %}
-    {{ error }}
-    {% endfor %}
-  </p>
-  {% endfor %}
+              {% for error in field.errors %}
+              {{ error }}
+              {% endfor %}
+            </p>
+            {% endfor %}
 
-  <button>Search</button>
+            <button class="btn btn-primary">Search</button>
 
-</form>
+          </form>
+          <hr>
+          <br>
+          {%if hikes %}
+          <h2 id="{{address}}">Hikes near {{address}}</h2>
+          <br>
+
+          <div id="directions-container">
+            {% for hike in hikes %}
+            <div id="{{hike.place_id}}" data-coords="{{coords}}">
+              <button class="directions-button btn btn-success">Get Directions</button>
+              <button class="forecast-button btn btn-warning">5 day forecast</button>
+              <p> <b> Name:</b> {{hike.name}}</p>
+              <p> <b> Address: </b> {{hike.address}} </p>
+              <p><i>Will give location if no address available</i></p>
+            </div>
+            {% endfor %}
+          </div>
+          {%endif%}
+        </div>
+      </div>
+      <div class="col-lg-4directions-div">
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 {%if hikes %}
-<h2 id="{{address}}">Hikes near {{address}}</h2>
-
-<div id="directions-container">
-  <ol id="directions-list">
-    {% for hike in hikes %}
-    <div>
-      <li id="{{hike.place_id}}" data-coords="{{coords}}">
-        <button class="directions-button">Get Directions</button>
-        <button class="forecast-button">5 day forecast</button>
-        <p> <b> Name:</b> {{hike.name}}</p>
-        <p> <b> Address: </b> {{hike.address}} </p>
-        <p><i>Will give location if no address available</i></p>
-      </li>
-    </div>
-    {% endfor %}
-  </ol>
-</div>
 
 <ol id="location-directions"></ol>
 

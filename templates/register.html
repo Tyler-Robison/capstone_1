@@ -1,28 +1,44 @@
-{% extends 'index.html'  %}
+{% extends 'index.html' %}
 
 {% block title %} Register {% endblock %}
 
 {% block main %}
+<div class="main-div">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="border border-info mt-3 rounded register-form">
+          <h1 id="register-h1">Register</h1>
 
-<h1 id="register-h1">Register</h1>
+          <form method="POST">
 
-<form method="POST">
 
-  {{ form.hidden_tag() }}
+            {{ form.hidden_tag() }}
 
-  {% for field in form
-    if field.widget.input_type != 'hidden' %}
-  <p>
-    {{ field.label }}
-    {{ field }}
+            {% for field in form
+            if field.widget.input_type != 'hidden' %}
+            <div class="row mb-3">
+              {{ field.label }}
+              {{ field(class_="form-control form-control-sm") }}
 
-    {% for error in field.errors %}
-    {{ error }}
-    {% endfor %}
-  </p>
-  {% endfor %}
+              {% for error in field.errors %}
+              {{ error }}
+              {% endfor %}
+            </div>
+            {% endfor %}
 
-  <button>Register</button>
 
-</form>
+            <div class="row mb-3">
+              <div class="col-lg-6">
+                <button class="btn btn-primary">Register</button>
+              </div>
+            </div>
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

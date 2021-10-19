@@ -1,9 +1,9 @@
 
 
 // When <li> clicked send id to backend
-document.querySelector('#directions-list').addEventListener('click', async function (e) {
+document.querySelector('#directions-container').addEventListener('click', async function (e) {
     if (e.target.classList.contains('directions-button')) {
-        const placeId = e.target.closest('li').id;
+        const placeId = e.target.closest('div').id;
         const originAddress = document.querySelector('h2').id;
 
         const res = await axios.post('/search/details', {
@@ -17,7 +17,7 @@ document.querySelector('#directions-list').addEventListener('click', async funct
     }
 
     if (e.target.classList.contains('forecast-button')) {
-        const coords = e.target.closest('li').getAttribute('data-coords');
+        const coords = e.target.closest('div').getAttribute('data-coords');
         const forecast_res = await axios.post('/search/forecast', {
             'coords': coords
         })
@@ -53,6 +53,7 @@ function appendDirections(steps, dist) {
         listElement.append(distPara);
         listElement.append(durationPara);
 
+        // manuever can be undef!!!!
         if (i > 0) {
             const manueverPara = document.createElement('p');
             manueverPara.innerHTML = `<b>Manuever: </b>${stepManuever}`;
@@ -64,8 +65,6 @@ function appendDirections(steps, dist) {
 }
 
 // Object Oriented?
-
-
 
 function appendForecast(forecast) {
     // console.log(forecast)
@@ -111,6 +110,8 @@ function appendForecast(forecast) {
         forecastDisplay.append(listElement)
     }
 }
+
+
 
 // function appendWeather(weather) {
 //     console.log(weather)

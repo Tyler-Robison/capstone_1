@@ -1,3 +1,32 @@
 #directions-container {
     background-color: lightblue;
 }
+
+.register-form {
+    padding: 15px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 1);
+    background-color: white;
+}
+
+.search-form {
+    padding: 15px;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 1);
+    background-color: white;
+}
+
+.main-div {
+    height: 90vh;
+    background-image: url("https://images.unsplash.com/photo-1634151296702-962d96fe5a18?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8");
+    /* background-image: url(/images/desert.jfif); */
+    background-size: cover;
+}
+
+.main-div-search {
+    height: 90vh;
+    background-image: url("https://images.unsplash.com/photo-1600284536251-8bb98db53468?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8");
+    /* background-image: url(/images/trail.jfif); */
+    background-size: cover;
+    /* background-position: center;
+    background-repeat: no-repeat; */
+    background-attachment: fixed;
+}
