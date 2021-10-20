@@ -14,18 +14,17 @@
 <body>
 
     <nav class="navbar nav-justified">
-        <div class="container-fluid">
-            <div class="r"></div>
-            <ul class="nav bg-light">
-                {% if 'user_id' not in session %}
-                <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
-                <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
-                {% endif %}
-
-                {% if 'user_id' in session %}
-                <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
-                <li class="nav-item"><a class="nav-link" href="/users/{{session['user_id']}}">Profile Info</a></li>
-                <li class="nav-item"><a class="nav-link" href="/search">Search</a></li>
+        <div class="container-fluid nav-container">
+            <a class="navbar-brand" href="#">HIKE FINDER</a>
+            <ul class="nav bg-light" style="background-color: orange;">
+                {% if not g.user %}
+                <li class="nav-item nav-li"><a class="nav-link" href="/register">Register</a></li>
+                <li class="nav-item nav-li"><a class="nav-link" href="/login">Login</a></li>
+                {% else %}
+                <li class="nav-item nav-li"><a class="nav-link" href="/search/past">Search History</a></li>
+                <li class="nav-item nav-li"><a class="nav-link" href="/logout">Logout</a></li>
+                <li class="nav-item nav-li"><a class="nav-link" href="/users/{{g.user.id}}">Profile</a></li>
+                <li class="nav-item nav-li"><a class="nav-link" href="/search">Search</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -38,6 +37,7 @@
     {%endfor%}
 
     <script src="https://unpkg.com/axios/dist/axios.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.js"></script>
     <script src="/static/app.js"></script>
 </body>
 

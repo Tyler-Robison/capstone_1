@@ -1,0 +1,34 @@
+{% extends 'index.html' %}
+
+{% block title %} Past Searchs {% endblock %}
+
+{% block main %}
+
+<div class="main-div-search">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="border border-info mt-3 rounded search-form">
+                    <h1>Past Searches</h1>
+
+                    <ol>
+                        {% for search in sorted_searches %}
+
+                        <li>
+                            <p><b>Address: </b>{{search.address}}</p>
+                            <p><b>Within </b>{{(search.radius * 0.0006)|round()}} Miles</p>
+                            <p><b>Date: </b>{{search.timestamp_mod}}</p>
+                            <a class="btn btn-primary" href="/search?address={{search.address}}&radius={{search.radius}}">Perform This Search Again</a>
+                            <!-- <p>Hikes Found: {{past_searches|length}}</p> -->
+                        </li>
+                        {%endfor%}
+                    </ol>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

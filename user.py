@@ -54,3 +54,26 @@ class User(db.Model):
         else:
             return False
     # end_authenticate
+
+    def edit_user(self, username, first_name, last_name, email):
+        """Allows user to edit profile info"""
+        self.username = username
+        self.first_name = first_name
+        self.last_name = last_name
+        self.email = email
+
+        db.session.commit()
+
+    def check_password(self, entered_password):
+        """Checks that user enters correct password"""
+
+        return  bcrypt.check_password_hash(self.password, entered_password)    
+
+    def change_password(self, password):
+        """Allows user to change their password"""
+
+        hashed = bcrypt.generate_password_hash(password)
+        hashed_utf8 = hashed.decode("utf8")
+
+        self.password = hashed_utf8
+        db.session.commit()

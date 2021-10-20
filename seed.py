@@ -1,4 +1,4 @@
-from models.user import User, db
+from user import User, db
 
 # Create all tables
 db.drop_all()

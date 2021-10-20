@@ -1,0 +1,46 @@
+{% extends 'index.html' %}
+
+{% block main %}
+
+<div class="main-div-profile">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="border border-info mt-3 rounded register-form">
+                    <h2 class="join-message">Edit Profile</h2>
+                    <form method="POST" id="user_form" action="/users/edit">
+                        {{ form.hidden_tag() }}
+
+                        {% for field in form if field.widget.input_type != 'hidden' and field.name != 'password' %}
+                        {% for error in field.errors %}
+                        <span class="text-danger">{{ error }}</span>
+                        {% endfor %}
+                        {{ field.label(class = 'mt-3') }}
+                        {{ field(placeholder=field.label.text, class="form-control") }}
+                        {% endfor %}
+
+                        <br>
+                        <p>To confirm changes, enter your password:</p>
+                        {% if form.password.errors %}
+                        {% for error in form.password.errors %}
+                        <span class="text-danger">
+                            {{ error }}
+                        </span>
+                        {% endfor %}
+                        {% endif %}
+                        {{ form.password(placeholder="Enter your password to confirm", class="form-control") }}
+
+                        <div class="edit-btn-area mt-3">
+                            <button class="btn btn-success">Edit User</button>
+                            <a href="/users/{{ g.user.id }}" class="btn btn-danger">Cancel</a>
+                        </div>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

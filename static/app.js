@@ -30,9 +30,10 @@ function appendDirections(steps, dist) {
     const locationList = document.querySelector('#location-directions');
     const totalDistance = document.createElement('p');
     locationList.innerHTML = '';
-    totalDistance.innerText = `Total Distance: ${dist}`;
+    totalDistance.innerHTML = `<b>Total Distance: </b>${dist}`;
     locationList.append(totalDistance);
 
+    // Loop through list array, make each step an <li>
     for (let i = 0; i < steps.length; i++) {
         const direction = steps[i].html_instructions;
         const stepDist = steps[i].distance.text;
@@ -40,7 +41,7 @@ function appendDirections(steps, dist) {
         const stepManuever = steps[i].maneuver;
 
         const directionPara = document.createElement('p');
-        directionPara.innerHTML = `<b>Step ${[i + 1]}: </b>${direction}`;
+        directionPara.innerHTML = `${direction}`;
 
         const distPara = document.createElement('p');
         distPara.innerHTML = `<b>Distance: </b>${stepDist}`;
@@ -53,15 +54,22 @@ function appendDirections(steps, dist) {
         listElement.append(distPara);
         listElement.append(durationPara);
 
-        // manuever can be undef!!!!
-        if (i > 0) {
+        // Some steps have undefined manuever
+        if (stepManuever !== undefined) {
             const manueverPara = document.createElement('p');
             manueverPara.innerHTML = `<b>Manuever: </b>${stepManuever}`;
             listElement.append(manueverPara)
         }
 
         locationList.append(listElement);
+        // Don't want <hr> on bottom <li>
+        if (i < steps.length - 1) {
+            const hr = document.createElement('hr');
+            locationList.append(hr)
+        }
     }
+    const directionDiv = document.querySelector('#directions-div');
+    directionDiv.classList.remove('invisible')
 }
 
 // Object Oriented?
@@ -74,6 +82,9 @@ function appendForecast(forecast) {
 
     for (let i = 0; i < forecastList.length; i++) {
         const datetime = forecastList[i].dt_txt
+        const dateArr = datetime.split(' ');
+        const time = convertTime(dateArr[1]);
+        const timeStr = `${dateArr[0]} ${time}`
         const cloudCover = forecastList[i].clouds.all
         const humidity = forecastList[i].main.humidity
         const tempKelvin = forecastList[i].main.temp
@@ -81,8 +92,8 @@ function appendForecast(forecast) {
         const description = forecastList[i].weather[0].description
         const wind = forecastList[i].wind.speed
 
-        const datetimePara = document.createElement('p');
-        datetimePara.innerHTML = `<b>Date: </b>${datetime}`;
+        const timePara = document.createElement('p');
+        timePara.innerHTML = `<b>Date: </b>${timeStr}`;
 
         const cloudCoverPara = document.createElement('p');
         cloudCoverPara.innerHTML = `<b>Cloud Cover (%): </b> ${cloudCover}`;
@@ -100,7 +111,7 @@ function appendForecast(forecast) {
         windPara.innerHTML = `<b>Windspeed (mph): </b>${wind}`;
 
         listElement = document.createElement('li');
-        listElement.append(datetimePara);
+        listElement.append(timePara);
         listElement.append(cloudCoverPara);
         listElement.append(humidityPara);
         listElement.append(tempPara);
@@ -108,7 +119,17 @@ function appendForecast(forecast) {
         listElement.append(windPara);
 
         forecastDisplay.append(listElement)
+        if (i < forecastList.length - 1) {
+            const hr = document.createElement('hr');
+            forecastDisplay.append(hr)
+        }
     }
+    const forecastDiv = document.querySelector('#forecast-div');
+    forecastDiv.classList.remove('invisible')
+}
+
+function convertTime(militaryTime) {
+    return moment(militaryTime, 'HH:mm:ss').format('h:mm A');
 }
 
 

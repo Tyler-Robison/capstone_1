@@ -6,7 +6,7 @@
 
 
 
-<div class="main-div">
+<div class="main-div-profile" style="margin-top: 0px;">
     <div class="container">
       <div class="row">
         <div class="col-lg-6">
@@ -19,6 +19,10 @@
             <h3>First Name: {{user.first_name}}</h3>
             <h3>Last Name: {{user.last_name}}</h3>
             <h3>E-mail: {{user.email}}</h3>
+
+            <a href="/users/edit" class="btn btn-primary">Edit Profile</a>
+            <a href="/users/password" class="btn btn-success">Change Password</a>
+            <a href="/users/delete" class="btn btn-danger">Delete Account</a>
           </div>
         </div>
       </div>

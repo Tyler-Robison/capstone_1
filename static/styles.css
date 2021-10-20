@@ -15,18 +15,34 @@
 }
 
 .main-div {
-    height: 90vh;
+    height: 94vh;
     background-image: url("https://images.unsplash.com/photo-1634151296702-962d96fe5a18?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8");
-    /* background-image: url(/images/desert.jfif); */
+    /* background-image: url(../images/desert.jpg); */
+    background-size: cover;
+}
+
+.main-div-profile {
+    height: 94vh;
+    /* background-image: url("https://images.unsplash.com/photo-1634151296702-962d96fe5a18?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8"); */
+    background-image: url('https://s118.convertio.me/p/5fQcuW4X3rp-9NQff1mOLg/6d19a1f9eae5c6d9b4aaeeef5bfe311f/forest.jpg');
     background-size: cover;
 }
 
 .main-div-search {
-    height: 90vh;
+    height: 94vh;
     background-image: url("https://images.unsplash.com/photo-1600284536251-8bb98db53468?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8");
-    /* background-image: url(/images/trail.jfif); */
+    /* background-image: url('/images/trail.jpg'); */
     background-size: cover;
     /* background-position: center;
     background-repeat: no-repeat; */
     background-attachment: fixed;
+}
+
+.nav-container {
+    background-color: orange;
+    margin: 0px;
+}
+
+.nav-li {
+    background-color: orange;
 }

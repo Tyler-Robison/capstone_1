@@ -11,7 +11,7 @@
       <div class="col-lg-4">
         <div class="border border-info mt-3 rounded search-form">
           <h1>Hike Finder</h1>
-          <form method="POST">
+          <form action="/search" method="POST">
 
             {{ form.hidden_tag() }}
 
@@ -30,9 +30,11 @@
             <button class="btn btn-primary">Search</button>
 
           </form>
-          <hr>
-          <br>
+       
           {%if hikes %}
+          <br>
+          <hr>
+          
           <h2 id="{{address}}">Hikes near {{address}}</h2>
           <br>
 
@@ -50,20 +52,25 @@
           {%endif%}
         </div>
       </div>
-      <div class="col-lg-4directions-div">
 
+      {%if hikes %}
+      <div class="col-lg-4">
+        <div id="directions-div" class="border border-info mt-3 rounded search-form invisible">
+          <ol id="location-directions"></ol>
+        </div>
       </div>
+      <div class="col-lg-4">
+        <div id="forecast-div" class="border border-info mt-3 rounded search-form invisible">
+          <ol id="forecast-display"></ol>
+        </div>
+      </div>
+      {%endif%}
+
     </div>
   </div>
 </div>
 
 
 
-{%if hikes %}
 
-<ol id="location-directions"></ol>
-
-<ol id="forecast-display"></ol>
-
-{%endif%}
 {% endblock %}
