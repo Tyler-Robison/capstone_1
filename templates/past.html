@@ -9,6 +9,9 @@
         <div class="row">
             <div class="col-lg-4">
                 <div class="border border-info mt-3 rounded search-form">
+                    {% if sorted_searches|length == 0 %}
+                    <h1>No Searches</h1>
+                    {%else%}
                     <h1>Past Searches</h1>
 
                     <ol>
@@ -18,12 +21,13 @@
                             <p><b>Address: </b>{{search.address}}</p>
                             <p><b>Within </b>{{(search.radius * 0.0006)|round()}} Miles</p>
                             <p><b>Date: </b>{{search.timestamp_mod}}</p>
-                            <a class="btn btn-primary" href="/search?address={{search.address}}&radius={{search.radius}}">Perform This Search Again</a>
-                            <!-- <p>Hikes Found: {{past_searches|length}}</p> -->
+                            <a class="btn btn-primary"
+                                href="/search?address={{search.address}}&radius={{search.radius}}">Search Again</a>
                         </li>
+                        <hr>
                         {%endfor%}
                     </ol>
-
+                    {%endif%}
 
                 </div>
             </div>

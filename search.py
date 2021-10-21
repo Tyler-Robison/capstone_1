@@ -48,21 +48,21 @@ class Search(db.Model):
 
         return coords
 
-    @classmethod
-    def get_weather(cls, coords):
-        """Given coords, returns weather"""
+    # @classmethod
+    # def get_weather(cls, coords):
+    #     """Given coords, returns weather"""
 
-        res = requests.get(f"{WEATHER_BASE_URL}", params={
-            'lat': coords['lat'],
-            'lon': coords['lng'],
-            'appid': weather_key})
+    #     res = requests.get(f"{WEATHER_BASE_URL}", params={
+    #         'lat': coords['lat'],
+    #         'lon': coords['lng'],
+    #         'appid': weather_key})
 
-        data = res.json()
-        desc = data['weather'][0]['description']
-        temp = data['main']['temp']
-        humid = data['main']['humidity']
+    #     data = res.json()
+    #     desc = data['weather'][0]['description']
+    #     temp = data['main']['temp']
+    #     humid = data['main']['humidity']
 
-        return {'desc': desc, 'temp': temp, 'humid': humid}
+    #     return {'desc': desc, 'temp': temp, 'humid': humid}
 
     @classmethod
     def get_forecast(cls, coords):
@@ -128,3 +128,21 @@ class Search(db.Model):
         response = requests.get(direction_url, params)
         # raise
         return response.json()
+
+    @classmethod
+    def sort_searches(csl, past_searches):
+        """Returns all past searches for a given user"""
+
+        sorted_searches = []
+        for count, search in enumerate(past_searches):
+        # consider changing to date to date/time
+            search.timestamp_mod = str(search.timestamp).split(' ')[0]
+            if count == 0:
+                sorted_searches.append(search)
+            if count > 0 and (search.address != past_searches[count-1].address or search.radius != past_searches[count-1].radius):
+                sorted_searches.append(search)
+
+        return sorted_searches  
+
+    def __repr__(self):
+        return f"<Search #{self.id}: user_id: {self.user_id}, name: {self.name}, address: {self.address}, radius: {self.radius}, place_id: {self.place_id}, timestamp: {self.timestamp}>"       

@@ -28,8 +28,12 @@ document.querySelector('#directions-container').addEventListener('click', async 
 
 function appendDirections(steps, dist) {
     const locationList = document.querySelector('#location-directions');
-    const totalDistance = document.createElement('p');
     locationList.innerHTML = '';
+    const h2 = document.createElement('h2')
+    h2.innerText = 'Directions'
+    h2.style.marginLeft = '25%'
+    locationList.append(h2)
+    const totalDistance = document.createElement('p');
     totalDistance.innerHTML = `<b>Total Distance: </b>${dist}`;
     locationList.append(totalDistance);
 
@@ -75,10 +79,15 @@ function appendDirections(steps, dist) {
 // Object Oriented?
 
 function appendForecast(forecast) {
-    // console.log(forecast)
+    
     const forecastDisplay = document.querySelector('#forecast-display')
     const forecastList = forecast.data.list
     forecastDisplay.innerHTML = ''
+    const h2 = document.createElement('h2')
+    h2.innerText = 'Forecast'
+    h2.style.marginLeft = '25%'
+    forecastDisplay.append(h2)
+
 
     for (let i = 0; i < forecastList.length; i++) {
         const datetime = forecastList[i].dt_txt
@@ -131,23 +140,3 @@ function appendForecast(forecast) {
 function convertTime(militaryTime) {
     return moment(militaryTime, 'HH:mm:ss').format('h:mm A');
 }
-
-
-
-// function appendWeather(weather) {
-//     console.log(weather)
-// }
-
-// if (e.target.classList.contains('weather-button')) {
-//     const coords = e.target.closest('li').getAttribute('data-coords');
-//     const weather_res = await axios.post('/search/weather', {
-//         'coords': coords
-//     })
-
-//     appendWeather(weather_res)
-// }
-
-
-
-
-

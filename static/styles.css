@@ -12,6 +12,8 @@
     padding: 15px;
     box-shadow: 2px 2px 8px rgba(0, 0, 0, 1);
     background-color: white;
+    overflow-y:auto;
+    max-height: 85vh;
 }
 
 .main-div {
@@ -29,7 +31,7 @@
 }
 
 .main-div-search {
-    height: 94vh;
+    height: 91.5vh;
     background-image: url("https://images.unsplash.com/photo-1600284536251-8bb98db53468?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8");
     /* background-image: url('/images/trail.jpg'); */
     background-size: cover;

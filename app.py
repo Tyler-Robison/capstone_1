@@ -6,15 +6,16 @@ from forms import RegisterForm, LoginForm, SearchForm, UserEditForm, ChangePwdFo
 import googlemaps
 from secret import google_key
 import requests
+import os
 # from operator import attrgetter
 
 CURR_USER_KEY = "curr_user"
 
-gmaps = googlemaps.Client(key=google_key)
-
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///weather_app'
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    os.environ.get('DATABASE_URL', 'postgresql:///weather_app'))
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///weather_app'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['SECRET_KEY'] = "chickensrawesome"
@@ -84,13 +85,13 @@ def register():
             db.session.commit()
         except:
             db.session.rollback()
-            flash('Registration failed, need unique username')
+            flash('Username or email already taken')
             return redirect('/register')
 
-        session["user_id"] = new_user.id
+        session[CURR_USER_KEY] = new_user.id
         flash('Account Created!')
 
-        return redirect(f'/users/{session["user_id"]}')
+        return redirect('/search')
 
     else:
         return render_template('register.html', form=form)
@@ -125,8 +126,6 @@ def login():
 @app.route('/logout')
 def logout():
     """Logs out a user"""
-
-    # session.pop('user_id')
 
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
@@ -289,22 +288,15 @@ def return_search_details():
 
 @app.route('/search/past', methods=["GET", "POST"])
 def get_past_searches():
-    """Retrieves past 10 searches for a user"""
+    """Retrieves past searches for a user"""
 
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    past_searches = Search.query.filter_by(user_id=g.user.id).all()
-    # Make this a method
-    sorted_searches = []
-    for count, search in enumerate(past_searches):
-        # consider changing to date to date/time
-        search.timestamp_mod = str(search.timestamp).split(' ')[0]
-        if count == 0:
-            sorted_searches.append(search)
-        if count > 0 and (search.address != past_searches[count-1].address or search.radius != past_searches[count-1].radius):
-            sorted_searches.append(search)
+    past_searches = Search.query.filter_by(user_id=g.user.id).limit(1000).all()
+    
+    sorted_searches = Search.sort_searches(past_searches)
 
     return render_template('past.html', past_searches=past_searches, sorted_searches=sorted_searches)
 
