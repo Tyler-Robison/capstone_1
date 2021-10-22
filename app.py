@@ -3,8 +3,6 @@ from flask_debugtoolbar import DebugToolbarExtension
 from user import db, connect_db, User
 from search import Search
 from forms import RegisterForm, LoginForm, SearchForm, UserEditForm, ChangePwdForm
-import googlemaps
-from secret import google_key
 import requests
 import os
 # from operator import attrgetter
@@ -18,7 +16,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = (
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///weather_app'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
-app.config['SECRET_KEY'] = "chickensrawesome"
+# app.config['SECRET_KEY'] = "chickensrawesome"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "def_key")
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 debug = DebugToolbarExtension(app)
 
