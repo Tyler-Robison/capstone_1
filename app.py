@@ -230,6 +230,7 @@ def delete_user():
     db.session.delete(g.user)
     db.session.commit()
 
+    flash('Account Deleted')
     return redirect("/register")
 
 
@@ -275,14 +276,15 @@ def find_hikes():
 
 
 @app.route('/search/details', methods=["POST"])
-def return_search_details():
+def return_directions():
     """Receives request from front-end"""
 
     destination_id = request.json['destination_id']
     origin_address = request.json['origin_address']
 
     directions = Search.get_directions(origin_address, destination_id)
-
+    # import pdb
+    # pdb.set_trace()
     return jsonify(directions)
 
 

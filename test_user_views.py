@@ -11,7 +11,7 @@ from unittest import TestCase
 
 from flask import session
 from user import db, connect_db, User
-from sqlalchemy import exc
+from search import Search
 
 os.environ['DATABASE_URL'] = "postgresql:///weather_test"
 
@@ -51,6 +51,28 @@ class UserViewTestCase(TestCase):
 
         self.u2 = u2
         self.uid2 = uid2
+
+        s1 = Search(user_id=u1.id, name='hike_name', address='hike_address',
+                                 radius='5000', place_id='place_id1', timestamp=None)
+        sid1 = 1111
+        s1.id = sid1     
+
+        s2 = Search(user_id=u1.id, name='hike_name2', address='hike_address2',
+                                 radius='5000', place_id='place_id1', timestamp=None)
+        sid2 = 2222
+        s2.id = sid2  
+
+        db.session.add_all([s1, s2])
+        db.session.commit()    
+
+        s1 = Search.query.get(sid1)
+        s2 = Search.query.get(sid2)         
+
+        self.s1 = s1
+        self.sid1 = sid1    
+
+        self.s2 = s2
+        self.sid2 = sid2 
 
 
     def tearDown(self):
@@ -421,6 +443,78 @@ class UserViewTestCase(TestCase):
             self.assertEqual(user.first_name, 'Tyler')
             self.assertEqual(user.last_name, 'Robison')
             self.assertEqual(user.email, 'email1@test.com')
+
+    def test_delete_user(self):
+        """If logged in, can we delete our account"""     
+
+        with self.client as c:
+            c.post("/login", data={
+                'username': 'testuser1',
+                'password': 'password1'
+            })   
+
+            user = User.query.filter_by(username='testuser1').first()
+            self.assertEqual(session[CURR_USER_KEY], user.id)
+            self.assertEqual(len(User.query.all()), 2) 
+
+            resp = c.get('/users/delete', follow_redirects=True)   
+
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn('Account Deleted', html) 
+            self.assertEqual(session.get(CURR_USER_KEY), None) 
+            self.assertEqual(len(User.query.all()), 1) 
+
+    def test_delete_user_logged_out(self):
+        """If logged out, are we prevented from deleting account"""     
+
+        with self.client as c:
+            c.get('/login')
+
+            self.assertEqual(session.get(CURR_USER_KEY), None) 
+            self.assertEqual(len(User.query.all()), 2) 
+
+            resp = c.get('/users/delete', follow_redirects=True)   
+
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn('Access unauthorized', html) 
+            self.assertEqual(session.get(CURR_USER_KEY), None) 
+            self.assertEqual(len(User.query.all()), 2) 
+
+    def test_past_searches(self):
+        """Tests that we can see past user searches"""
+
+        searches = Search.query.filter_by(user_id = 1111).all()
+        # 2 past searches for testuser1
+        self.assertEqual(len(searches), 2)      
+
+        with self.client as c:
+            c.post("/login", data={
+                'username': 'testuser1',
+                'password': 'password1'
+            })   
+
+            resp = c.post('/search', data ={
+                'address': '101 loker st',
+                'radius': 5000
+            }) 
+
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn('Get Directions', html)
+            self.assertIn('5 day forecast', html)  
+
+            # Should now be more than 2 for 1111 and 0 for user 2222
+            searches = Search.query.filter_by(user_id = 1111).all()
+            self.assertTrue(len(searches) > 2)
+            searches = Search.query.filter_by(user_id = 2222).all() 
+            self.assertEqual(len(searches), 0) 
+
+            
+
+
+
 
             
 
