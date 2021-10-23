@@ -1,23 +1,15 @@
 from operator import add
 import requests
-from secret import map_key, weather_key, google_key
+from secret import weather_key, google_key
 from user import db
 from datetime import datetime
-import googlemaps
 import pprint
-import time
 
-# Tutorial said to have a function output API key and initialize variable w/ output of the func.
-# API_KEY = get_my_key()
 
-# gmaps = googlemaps.Client(key=google_key)
-
-WEATHER_BASE_URL = "http://api.openweathermap.org/data/2.5/weather"
-FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast"
+FORECAST_BASE_URL = "https://api.openweathermap.org/data/2.5/forecast"
 GOOGLE_BASE_URL = "https://maps.googleapis.com/maps/api/place/nearbysearch/output"
 GOOGLE_GEOCODE = 'https://maps.googleapis.com/maps/api/geocode/json?'
-# Can consolidate some of these
-# http vs https?
+
 
 
 class Search(db.Model):
@@ -48,21 +40,6 @@ class Search(db.Model):
 
         return coords
 
-    # @classmethod
-    # def get_weather(cls, coords):
-    #     """Given coords, returns weather"""
-
-    #     res = requests.get(f"{WEATHER_BASE_URL}", params={
-    #         'lat': coords['lat'],
-    #         'lon': coords['lng'],
-    #         'appid': weather_key})
-
-    #     data = res.json()
-    #     desc = data['weather'][0]['description']
-    #     temp = data['main']['temp']
-    #     humid = data['main']['humidity']
-
-    #     return {'desc': desc, 'temp': temp, 'humid': humid}
 
     @classmethod
     def get_forecast(cls, coords):

@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, redirect, flash, session, jso
 from flask_debugtoolbar import DebugToolbarExtension
 from user import db, connect_db, User
 from search import Search
-from forms import RegisterForm, LoginForm, SearchForm, UserEditForm, ChangePwdForm
+from forms import RegisterForm, LoginForm, SearchForm, UserEditForm, ChangePwdForm, PasswordForm
 import requests
 import os
 # from operator import attrgetter
@@ -49,7 +49,7 @@ def home_page():
     or search page if user already logged in"""
 
     if g.user:
-        flash('Welcome Back!')
+        flash(f'Welcome Back {g.user.username}')
         return redirect('/search')
 
     else:
@@ -62,8 +62,7 @@ def register():
     """Allows user to register"""
 
     if g.user:
-        # if "user_id" in session:
-        flash('Already registered')
+        flash('Already Logged in')
         return redirect('/search')
 
     form = RegisterForm()
@@ -101,7 +100,6 @@ def login():
     """Logs in a user"""
 
     if g.user:
-        # if "user_id" in session:
         flash('Already logged in')
         return redirect('/search')
 
@@ -114,7 +112,7 @@ def login():
         logged_user = User.authenticate(username, password)
         if logged_user:
             session[CURR_USER_KEY] = logged_user.id
-            flash(f'Welcome back {logged_user.username}')
+            flash(f'Welcome Back {logged_user.username}')
             return redirect('/search')
         else:
             form.username.errors = ['Invalid username/password']
@@ -130,7 +128,7 @@ def logout():
         del session[CURR_USER_KEY]
 
     flash('Logout Succesful')
-    return redirect('/')
+    return redirect('/login')
 
 
 @app.route('/users/<int:user_id>')
@@ -138,8 +136,12 @@ def display_user_info(user_id):
     """Shows profile information"""
 
     if not g.user:
-        flash("Access unauthorized.", "danger")
+        flash("Access unauthorized", "danger")
         return redirect("/")
+
+    if g.user.id != user_id:
+        flash("Access unauthorized", "danger")
+        return redirect("/")    
 
     user = User.query.get_or_404(user_id)
 
@@ -172,7 +174,7 @@ def edit_profile():
 
         try:
             user.edit_user(username, first_name, last_name, email)
-            flash('user edited')
+            flash('Profile Info Edited')
             return redirect(f'/users/{user.id}')
         except:
             db.session.rollback()
@@ -215,7 +217,7 @@ def change_password():
     return render_template('password.html', user=user, form=form)
 
 
-@app.route('/users/delete')
+@app.route('/users/delete', methods=["GET", "POST"])
 def delete_user():
     """Allows user to delete their account"""
 
@@ -223,14 +225,27 @@ def delete_user():
         flash("Access unauthorized.", "danger")
         return redirect("/")
 
-    if CURR_USER_KEY in session:
-        del session[CURR_USER_KEY]
+    form = PasswordForm()
 
-    db.session.delete(g.user)
-    db.session.commit()
+    if form.validate_on_submit():
+        password = form.password.data    
 
-    flash('Account Deleted')
-    return redirect("/register")
+        correct_password = g.user.check_password(password)
+
+        if not correct_password:
+            flash('Incorrect Password')
+            return redirect('/users/delete')
+
+        if CURR_USER_KEY in session:
+            del session[CURR_USER_KEY]
+
+        db.session.delete(g.user)
+        db.session.commit()
+
+        flash('Account Deleted')
+        return redirect("/register")
+
+    return render_template('delete.html', form=form)    
 
 
 # Search Routes ########################################

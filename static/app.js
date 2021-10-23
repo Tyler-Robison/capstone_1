@@ -85,7 +85,7 @@ function appendForecast(forecast) {
     forecastDisplay.innerHTML = ''
     const h2 = document.createElement('h2')
     h2.innerText = 'Forecast'
-    h2.style.marginLeft = '25%'
+    h2.style.marginLeft = '30%'
     forecastDisplay.append(h2)
 
 
@@ -93,7 +93,8 @@ function appendForecast(forecast) {
         const datetime = forecastList[i].dt_txt
         const dateArr = datetime.split(' ');
         const time = convertTime(dateArr[1]);
-        const timeStr = `${dateArr[0]} ${time}`
+        const dateStr = `${dateArr[0]}`
+        const timeStr = `${time}`
         const cloudCover = forecastList[i].clouds.all
         const humidity = forecastList[i].main.humidity
         const tempKelvin = forecastList[i].main.temp
@@ -101,8 +102,11 @@ function appendForecast(forecast) {
         const description = forecastList[i].weather[0].description
         const wind = forecastList[i].wind.speed
 
+        const datePara = document.createElement('p');
+        datePara.innerHTML = `<b>Date: </b>${dateStr}`;
+
         const timePara = document.createElement('p');
-        timePara.innerHTML = `<b>Date: </b>${timeStr}`;
+        timePara.innerHTML = `<b>Time: </b>${timeStr}`;
 
         const cloudCoverPara = document.createElement('p');
         cloudCoverPara.innerHTML = `<b>Cloud Cover (%): </b> ${cloudCover}`;
@@ -119,15 +123,17 @@ function appendForecast(forecast) {
         const windPara = document.createElement('p');
         windPara.innerHTML = `<b>Windspeed (mph): </b>${wind}`;
 
-        listElement = document.createElement('li');
-        listElement.append(timePara);
-        listElement.append(cloudCoverPara);
-        listElement.append(humidityPara);
-        listElement.append(tempPara);
-        listElement.append(descriptionPara);
-        listElement.append(windPara);
+        listDiv = document.createElement('div');
+        listDiv.append(datePara);
+        listDiv.append(timePara);
+        listDiv.append(cloudCoverPara);
+        listDiv.append(humidityPara);
+        listDiv.append(tempPara);
+        listDiv.append(descriptionPara);
+        listDiv.append(windPara);
+        listDiv.style.paddingLeft = '5%'
 
-        forecastDisplay.append(listElement)
+        forecastDisplay.append(listDiv)
         if (i < forecastList.length - 1) {
             const hr = document.createElement('hr');
             forecastDisplay.append(hr)
@@ -140,3 +146,5 @@ function appendForecast(forecast) {
 function convertTime(militaryTime) {
     return moment(militaryTime, 'HH:mm:ss').format('h:mm A');
 }
+
+

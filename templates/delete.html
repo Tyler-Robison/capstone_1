@@ -1,6 +1,6 @@
 {% extends 'index.html' %}
 
-{% block title %} Change Password {% endblock %}
+{% block title %} Delete Account {% endblock %}
 
 {% block main %}
 
@@ -9,18 +9,19 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="border border-info mt-3 rounded register-form">
-                    <h2 class="join-message">Change Password</h2>
-                    <form method="POST" id="user_form" action="/users/password">
+                    <h2 class="join-message">Delete Account</h2>
+                    <form method="POST" id="user_form" action="/users/delete">
                         {{ form.hidden_tag() }}
 
                         {% for field in form if field.widget.input_type != 'hidden' %}
                         {% for error in field.errors %}
                         <span class="text-danger">{{ error }}</span>
                         {% endfor %}
-                        {{ field(placeholder=field.label.text, class="form-control mt-3") }}
+
+                        {{ field(placeholder=field.label.text, class="form-control") }}
                         {% endfor %}
 
-                        {% if form.old_password.errors %}
+                        {% if form.password.errors %}
                         {% for error in form.password.errors %}
                         <span class="text-danger">
                             {{ error }}
@@ -29,12 +30,10 @@
                         {% endif %}
 
                         <div class="edit-btn-area mt-3">
-                            <button class="btn btn-success">Change Password</button>
+                            <button class="btn btn-success">Delete Account</button>
                             <a href="/users/{{ g.user.id }}" class="btn btn-danger">Cancel</a>
                         </div>
                     </form>
-
-
                 </div>
             </div>
         </div>

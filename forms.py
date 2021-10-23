@@ -21,7 +21,7 @@ class LoginForm(FlaskForm):
 class SearchForm(FlaskForm):
     """Form for searching"""
     address = StringField('Address', validators=[InputRequired()])
-    radius = SelectField('Miles Away', coerce=int)
+    radius = SelectField('Find Hikes Within', coerce=int)
 
 class UserEditForm(FlaskForm):
     """Form for editing profile"""    
@@ -35,3 +35,7 @@ class ChangePwdForm(FlaskForm):
     """Form for changing password"""    
     old_password = PasswordField('Please Enter Your Password', validators=[InputRequired()])
     new_password = PasswordField('New Password', validators=[InputRequired(), Length(min=6)])
+
+class PasswordForm(FlaskForm):
+    """Form for entering password"""
+    password = PasswordField('Enter password to confirm delete', validators=[InputRequired()])    

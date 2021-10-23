@@ -5,7 +5,7 @@
 #    FLASK_ENV=production python -m unittest test_search_views.py
 
 
-from app import app, CURR_USER_KEY
+
 import os
 from unittest import TestCase
 
@@ -15,6 +15,7 @@ from search import Search
 
 os.environ['DATABASE_URL'] = "postgresql:///weather_test"
 
+from app import app, CURR_USER_KEY
 
 db.create_all()
 
@@ -100,43 +101,43 @@ class SearchViewTestCase(TestCase):
             self.assertIn('Get Directions', html)
             self.assertIn('5 day forecast', html)
 
-    # def test_return_directions(self):
-    #     """When receiving data from front-end can we display directions"""
+    def test_return_directions(self):
+        """When receiving data from front-end can we display directions"""
 
-    #     with self.client as c:
-    #         c.post("/login", data={
-    #             'username': 'testuser1',
-    #             'password': 'password1'
-    #         })
+        with self.client as c:
+            c.post("/login", data={
+                'username': 'testuser1',
+                'password': 'password1'
+            })
 
-    #         resp = c.post('/search', data={
-    #             'address': '101 loker st',
-    #             'radius': 5000
-    #         })
+            resp = c.post('/search', data={
+                'address': '101 loker st',
+                'radius': 5000
+            })
 
-    #         self.assertEqual(resp.status_code, 200)
-    #         html = resp.get_data(as_text=True)
-    #         self.assertIn('Get Directions', html)
-    #         self.assertIn('5 day forecast', html)
+            self.assertEqual(resp.status_code, 200)
+            html = resp.get_data(as_text=True)
+            self.assertIn('Get Directions', html)
+            self.assertIn('5 day forecast', html)
 
-    #         #works up to this point
+            #works up to this point
 
-    #     # Post request comes from JS/Axios as JSON
-    #         c.post('/search/details', json={
-    #             'origin_address': '101 loker st',
-    #             'destination_id': 'ChIJVxwHDsyF44kR2sqNCPwrBYk'
-    #         })
+        # Post request comes from JS/Axios as JSON
+            c.post('/search/details', json={
+                'origin_address': '101 loker st',
+                'destination_id': 'ChIJVxwHDsyF44kR2sqNCPwrBYk'
+            })
 
-    #         # We get back correct directions response
-    #         # Can't check page html again?
+            # We get back correct directions response
+            # Can't check page html again?
 
-    #         # import pdb
-    #         # pdb.set_trace()
+            # import pdb
+            # pdb.set_trace()
 
-    #         resp = c.get('/search')
+            resp = c.get('/search')
 
-    #         html = resp.get_data(as_text=True)
-    #         self.assertIn('Directions', html)
+            html = resp.get_data(as_text=True)
+            self.assertIn('Directions', html)
 
     def test_past_searches(self):
         """Can we see past user searches in HTML"""

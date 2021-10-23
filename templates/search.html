@@ -18,9 +18,13 @@
             {% for field in form
             if field.widget.input_type != 'hidden' %}
             <p>
+              {% if field.name == 'radius' %}
+              {{ field.label }}
+              {{ field }} Miles
+              {%else%}
               {{ field.label }}
               {{ field }}
-
+              {%endif%}
               {% for error in field.errors %}
               {{ error }}
               {% endfor %}
@@ -30,11 +34,11 @@
             <button class="btn btn-primary">Search</button>
 
           </form>
-       
+
           {%if hikes %}
           <br>
           <hr>
-          
+
           <h2 id="{{address}}">Hikes near {{address}}</h2>
           <br>
 
@@ -61,7 +65,7 @@
       </div>
       <div class="col-lg-4">
         <div id="forecast-div" class="border border-info mt-3 rounded search-form invisible">
-          <ol id="forecast-display"></ol>
+          <div id="forecast-display"></div>
         </div>
       </div>
       {%endif%}

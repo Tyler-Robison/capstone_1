@@ -1,5 +1,7 @@
 {% extends 'index.html' %}
 
+{% block title %} Edit Profile {% endblock %}
+
 {% block main %}
 
 <div class="main-div-profile">
@@ -16,7 +18,7 @@
                         <span class="text-danger">{{ error }}</span>
                         {% endfor %}
                         {{ field.label(class = 'mt-3') }}
-                        {{ field(placeholder=field.label.text, class="form-control") }}
+                        {{ field(class="form-control") }}
                         {% endfor %}
 
                         <br>

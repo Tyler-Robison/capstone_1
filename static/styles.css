@@ -1,5 +1,6 @@
 #directions-container {
     background-color: lightblue;
+    padding: 2%;
 }
 
 .register-form {
@@ -24,9 +25,9 @@
 }
 
 .main-div-profile {
-    height: 94vh;
+    height: 91.5vh;
     /* background-image: url("https://images.unsplash.com/photo-1634151296702-962d96fe5a18?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8"); */
-    background-image: url('https://s118.convertio.me/p/5fQcuW4X3rp-9NQff1mOLg/6d19a1f9eae5c6d9b4aaeeef5bfe311f/forest.jpg');
+    background-image: url('https://images.unsplash.com/photo-1605196560547-b2f7281b7355?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2070&q=80');
     background-size: cover;
 }
 
@@ -35,8 +36,8 @@
     background-image: url("https://images.unsplash.com/photo-1600284536251-8bb98db53468?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8");
     /* background-image: url('/images/trail.jpg'); */
     background-size: cover;
-    /* background-position: center;
-    background-repeat: no-repeat; */
+    background-position: center;
+    background-repeat: no-repeat;
     background-attachment: fixed;
 }
 
@@ -47,4 +48,8 @@
 
 .nav-li {
     background-color: orange;
+}
+
+.error-para {
+    font-size: large;
 }
