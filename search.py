@@ -4,6 +4,7 @@ from secret import weather_key, google_key
 from user import db
 from datetime import datetime
 import pprint
+# pprint needed for parsing/debugging json responses
 
 
 FORECAST_BASE_URL = "https://api.openweathermap.org/data/2.5/forecast"
@@ -96,6 +97,7 @@ class Search(db.Model):
 
         # place_id must be prefaced with place_id: <id here>
         # 'destination': f'place_id:{destination_id}'
+        # Both must be exactly this format or won't work
         params = {
             'origin': origin_address,
             'destination': f'place_id:{destination_id}',
@@ -103,20 +105,21 @@ class Search(db.Model):
         }
 
         response = requests.get(direction_url, params)
-        # raise
         return response.json()
 
     @classmethod
     def sort_searches(csl, past_searches):
-        """Returns all past searches for a given user"""
+        """Returns all unique past searches for a given user"""
 
         sorted_searches = []
         for count, search in enumerate(past_searches):
-        # consider changing to date to date/time
+        
             search.timestamp_mod = str(search.timestamp).split(' ')[0]
+            # Changes format of timestamp without altering original stamp
             if count == 0:
                 sorted_searches.append(search)
             if count > 0 and (search.address != past_searches[count-1].address or search.radius != past_searches[count-1].radius):
+                # ensures returning only unique searches.
                 sorted_searches.append(search)
 
         return sorted_searches  

@@ -1,3 +1,5 @@
+Example Pretty Printed response from OpenWeather API.
+
 {'city': {'coord': {'lat': 42.3628, 'lon': -71.3415},
           'country': 'US',
           'id': 4954654,
