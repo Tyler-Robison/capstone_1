@@ -161,7 +161,7 @@ class UserViewTestCase(TestCase):
             resp = c.get('logout')
 
             self.assertEqual(resp.status_code, 302)
-            self.assertEqual(resp.location, 'http://localhost/')
+            self.assertEqual(resp.location, 'http://localhost/login')
 
             user = User.query.filter_by(username='testuser').first()
             self.assertEqual(session.get(CURR_USER_KEY), None)
@@ -273,7 +273,7 @@ class UserViewTestCase(TestCase):
             self.assertEqual(session.get(CURR_USER_KEY), None)
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
-            self.assertIn('Access unauthorized', html) 
+            self.assertIn('Please Register First', html) 
 
     def test_edit_profile(self):
         """While logged in, can we edit profile"""
@@ -302,7 +302,7 @@ class UserViewTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
-            self.assertIn('user edited', html) 
+            self.assertIn('Profile Info Edited', html) 
 
             user = User.query.filter_by(username='new_name').first()
             self.assertEqual(user.username, 'new_name')
@@ -334,7 +334,7 @@ class UserViewTestCase(TestCase):
             self.assertEqual(session.get(CURR_USER_KEY), None)
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
-            self.assertIn('Access unauthorized', html) 
+            self.assertIn('Please Register First', html) 
 
             user = User.query.filter_by(username='testuser1').first()
             self.assertEqual(user.username, 'testuser1')
@@ -381,7 +381,7 @@ class UserViewTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
-            self.assertIn('Access unauthorized', html) 
+            self.assertIn('Please Register First', html) 
 
     def test_change_password_wrong_password(self):
         """If we enter incorrect current password, are we prevented from changing password"""  
@@ -457,7 +457,9 @@ class UserViewTestCase(TestCase):
             self.assertEqual(session[CURR_USER_KEY], user.id)
             self.assertEqual(len(User.query.all()), 2) 
 
-            resp = c.get('/users/delete', follow_redirects=True)   
+            resp = c.post('/users/delete', data={
+                'password':'password1'
+            }, follow_redirects=True)   
 
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
@@ -478,7 +480,7 @@ class UserViewTestCase(TestCase):
 
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
-            self.assertIn('Access unauthorized', html) 
+            self.assertIn('Please Register First', html) 
             self.assertEqual(session.get(CURR_USER_KEY), None) 
             self.assertEqual(len(User.query.all()), 2) 
 

@@ -9,8 +9,7 @@
 import os
 from unittest import TestCase
 
-from flask import session
-from user import db, connect_db, User
+from user import db, User
 from search import Search
 
 os.environ['DATABASE_URL'] = "postgresql:///weather_test"
@@ -101,6 +100,7 @@ class SearchViewTestCase(TestCase):
             self.assertIn('Get Directions', html)
             self.assertIn('5 day forecast', html)
 
+
     def test_return_directions(self):
         """When receiving data from front-end can we display directions"""
 
@@ -120,24 +120,44 @@ class SearchViewTestCase(TestCase):
             self.assertIn('Get Directions', html)
             self.assertIn('5 day forecast', html)
 
-            #works up to this point
-
-        # Post request comes from JS/Axios as JSON
-            c.post('/search/details', json={
+      
+            json_resp = c.post('/search/details', json={
                 'origin_address': '101 loker st',
                 'destination_id': 'ChIJVxwHDsyF44kR2sqNCPwrBYk'
             })
 
-            # We get back correct directions response
-            # Can't check page html again?
+            html = json_resp.get_data(as_text=True)
+            self.assertIn('place_id', html)
+            # We are getting back correct json response
+            
+    def test_return_forecast(self):
+        """When receiving data from front-end can we display forecast"""
 
-            # import pdb
-            # pdb.set_trace()
+        with self.client as c:
+            c.post("/login", data={
+                'username': 'testuser1',
+                'password': 'password1'
+            })
 
-            resp = c.get('/search')
+            resp = c.post('/search', data={
+                'address': '101 loker st',
+                'radius': 5000
+            })
 
+            self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
-            self.assertIn('Directions', html)
+            self.assertIn('Get Directions', html)
+            self.assertIn('5 day forecast', html)
+
+            json_resp = c.post('/search/forecast', json={
+                'coords':"{'lat': 42.3292493, 'lng': -71.352353}"
+            })
+
+            html = json_resp.get_data(as_text=True)
+            self.assertIn('city', html)
+
+
+
 
     def test_past_searches(self):
         """Can we see past user searches in HTML"""
