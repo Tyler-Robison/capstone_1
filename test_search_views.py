@@ -173,7 +173,6 @@ class SearchViewTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
             html = resp.get_data(as_text=True)
             self.assertIn('hike_address', html)
-            # self.assertIn('5 day forecast', html)
 
     def test_search_again(self):
         """Do forms autofill when searching again"""

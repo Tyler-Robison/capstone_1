@@ -24,13 +24,13 @@
 }
 
 .main-div-profile {
-    height: 91.5vh;
+    height: 94vh;
     background-image: url(/static/images/trail.jpg);
     background-size: cover;
 }
 
 .main-div-search {
-    height: 91.5vh;
+    height: 94vh;
     background-image: url(/static/images/forest.jpg);
     background-size: cover;
     background-position: center;
@@ -38,15 +38,19 @@
     background-attachment: fixed;
 }
 
-.nav-container {
+/* .nav-container {
     background-color: orange;
     margin: 0px;
-}
+} */
 
 .nav-li {
-    background-color: orange;
+    background-color: rgb(252, 184, 58);
 }
 
 .error-para {
     font-size: large;
+}
+
+.navbar {
+    background-color: rgb(252, 184, 58);
 }

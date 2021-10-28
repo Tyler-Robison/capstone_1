@@ -1,7 +1,8 @@
 
 
-// When <li> clicked send id to backend
+// When <li> clicked send id or data-attr to backend
 document.querySelector('#directions-container').addEventListener('click', async function (e) {
+    // If user clicks "Get Directions" perform following steps
     if (e.target.classList.contains('directions-button')) {
         const placeId = e.target.closest('div').id;
         const originAddress = document.querySelector('h2').id;
@@ -16,6 +17,7 @@ document.querySelector('#directions-container').addEventListener('click', async 
         appendDirections(steps, dist);
     }
 
+    // If user clicks "Get Forecast" perform following steps
     if (e.target.classList.contains('forecast-button')) {
         const coords = e.target.closest('div').getAttribute('data-coords');
         const forecast_res = await axios.post('/search/forecast', {
@@ -76,7 +78,6 @@ function appendDirections(steps, dist) {
     directionDiv.classList.remove('invisible')
 }
 
-// Object Oriented?
 
 function appendForecast(forecast) {
     
@@ -87,7 +88,6 @@ function appendForecast(forecast) {
     h2.innerText = 'Forecast'
     h2.style.marginLeft = '30%'
     forecastDisplay.append(h2)
-
 
     for (let i = 0; i < forecastList.length; i++) {
         const datetime = forecastList[i].dt_txt
@@ -146,5 +146,4 @@ function appendForecast(forecast) {
 function convertTime(militaryTime) {
     return moment(militaryTime, 'HH:mm:ss').format('h:mm A');
 }
-
 

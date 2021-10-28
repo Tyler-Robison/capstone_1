@@ -115,7 +115,7 @@ class Search(db.Model):
         for count, search in enumerate(past_searches):
         
             search.timestamp_mod = str(search.timestamp).split(' ')[0]
-            # Changes format of timestamp without altering original stamp
+            # Changes format of timestamp without altering original timestamp
             if count == 0:
                 sorted_searches.append(search)
             if count > 0 and (search.address != past_searches[count-1].address or search.radius != past_searches[count-1].radius):
